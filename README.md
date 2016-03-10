@@ -1,6 +1,7 @@
 # Butcher
 
-A simple web application for finding and distributing meet-ups.
+Your friendly, local meet(up) corner shop. Fresh produce delivered to your email.
+
 
 ## Testing
 
