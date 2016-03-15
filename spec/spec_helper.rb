@@ -3,7 +3,7 @@ require 'rack/test'
 
 ENV['RACK_ENV'] = 'test'
 
-require './butcher'
+require './app/butcher'
 
 module RSpecMixin
   include Rack::Test::Methods

@@ -1,2 +1,2 @@
-require './butcher'
+require './app/butcher'
 run Sinatra::Application
