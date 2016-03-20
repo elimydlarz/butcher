@@ -12,5 +12,5 @@ rspec
 ## Running
 
 ```
-ruby app/butcher.rb
+MEETUP_API_KEY=<some legit meetup.com API key> ruby app/butcher.rb
 ```
