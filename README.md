@@ -12,5 +12,5 @@ rspec
 ## Running
 
 ```
-ruby butcher.rb
+ruby app/butcher.rb
 ```
