@@ -27,8 +27,8 @@ describe 'butcher' do
     end
 
     context 'when meetup.com gives us a list of meetups' do
-      let(:response_from_meetup) { JSON.parse(response_fixture, symbolize_names: true) }
-      let(:response_fixture) { File.read('./spec/fixtures/open_events_melbourne.json') }
+      let(:response_from_meetup) { JSON.parse(open_events_melbourne_fixture, symbolize_names: true) }
+      let(:open_events_melbourne_fixture) { File.read('./spec/fixtures/open_events_melbourne.json') }
 
       it 'displays the list of meetups' do
         expect(subject.body).to eq response_from_meetup.to_json
