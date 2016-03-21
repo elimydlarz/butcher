@@ -9,8 +9,10 @@
         = meetup[:group][:name]
       %h3
         = meetup[:name]
-      - if meetup.has_key? :venue
-        %p
+      %p
+        = Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
+      %p
+        - if meetup.has_key? :venue
           = meetup[:venue][:name]
           - if meetup[:venue].has_key? :address_1
             %br

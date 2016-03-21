@@ -56,6 +56,11 @@ describe 'butcher' do
             expect(subject.body).to include meetup[:venue][:address_2] if meetup[:venue].has_key? :address_2
           end
         end
+
+        it 'displays the meetup time' do
+          meetup_time = Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
+          expect(subject.body).to include meetup_time
+        end
       end
     end
   end
