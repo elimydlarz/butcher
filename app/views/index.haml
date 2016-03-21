@@ -1,0 +1,9 @@
+!!!
+%html
+  %head
+    %title MeetButcher
+  %body
+    %h1 Meet-ups in Melbourne this week
+    - meetups.each do |meetup|
+      %p
+        = meetup[:name]

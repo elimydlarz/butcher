@@ -26,12 +26,14 @@ describe 'butcher' do
       )
     end
 
-    context 'when meetup.com gives us a list of meetups' do
+    context 'when meetup.com returns a list of meetups' do
       let(:response_from_meetup) { JSON.parse(open_events_melbourne_fixture, symbolize_names: true) }
       let(:open_events_melbourne_fixture) { File.read('./spec/fixtures/open_events_melbourne.json') }
 
-      it 'displays the list of meetups' do
-        expect(subject.body).to eq response_from_meetup.to_json
+      it 'displays the meetup names' do
+        response_from_meetup[:results].each do |meetup|
+          expect(subject.body).to include meetup[:name]
+        end
       end
     end
   end
