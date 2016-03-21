@@ -35,6 +35,12 @@ describe 'butcher' do
           expect(subject.body).to include meetup[:name]
         end
       end
+
+      it 'displays the group names' do
+        response_from_meetup[:results].each do |meetup|
+          expect(subject.body).to include meetup[:group][:name]
+        end
+      end
     end
   end
 end

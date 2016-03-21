@@ -5,5 +5,7 @@
   %body
     %h1 Meet-ups in Melbourne this week
     - meetups.each do |meetup|
-      %p
+      %h2
+        = meetup[:group][:name]
+      %h3
         = meetup[:name]
