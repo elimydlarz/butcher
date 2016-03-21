@@ -4,13 +4,32 @@ describe 'butcher' do
   describe 'landing page' do
     subject { get '/' }
 
+    let(:meetup) do
+      {
+        name: 'Complete Meetup',
+        group: { name: 'Melbourne Business Intelligence Meetup' },
+        venue: {
+          name: 'Queens Collective',
+          address_1: 'Level 1, 20 Queens St',
+          address_2: 'Melbourne, Victoria'
+        },
+        time: 1458198000000
+      }
+    end
+
+    let(:incomplete_meetup) do
+      {
+        name: 'Minimum Meetup',
+        group: { name: 'Goodbye Moon-men' },
+      }
+    end
+
     before do
       api_key_stub = 'TEST_API_KEY'
       allow(ENV).to receive(:fetch).with('MEETUP_API_KEY') { api_key_stub }
 
       stub_request(
-        :get,
-        'https://api.meetup.com/2/open_events'
+        :get, 'https://api.meetup.com/2/open_events'
       ).with(
          query: {
            status: 'upcoming',
@@ -22,46 +41,17 @@ describe 'butcher' do
            key: api_key_stub
          }
       ).to_return(
-        body: response_from_meetup_dot_com
+        body: { results: [meetup, incomplete_meetup] }.to_json
       )
     end
 
-    context 'when meetup.com returns a list of meetups' do
-      open_events_melbourne_fixture = JSON.parse(
-        File.read('./spec/fixtures/open_events_melbourne.json'),
-        symbolize_names: true
-      )
-      meetups = open_events_melbourne_fixture[:results]
-
-      let(:response_from_meetup_dot_com) { open_events_melbourne_fixture.to_json }
-
-      meetups.each do |meetup|
-        it 'displays the meetup name' do
-          expect(subject.body).to include meetup[:name]
-        end
-
-        it 'displays the meetup group name' do
-          expect(subject.body).to include meetup[:group][:name]
-        end
-
-        it 'displays the meetup venue' do
-          if meetup.has_key? :venue
-            expect(subject.body).to include meetup[:venue][:name]
-          end
-        end
-
-        it 'displays the meetup address first line' do
-          if meetup.has_key? :venue
-            expect(subject.body).to include meetup[:venue][:address_1]
-            expect(subject.body).to include meetup[:venue][:address_2] if meetup[:venue].has_key? :address_2
-          end
-        end
-
-        it 'displays the meetup time' do
-          meetup_time = Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
-          expect(subject.body).to include meetup_time
-        end
-      end
+    it 'displays meetup details' do
+      expect(subject.body).to include meetup[:name]
+      expect(subject.body).to include meetup[:group][:name]
+      expect(subject.body).to include meetup[:venue][:name]
+      expect(subject.body).to include meetup[:venue][:address_1]
+      expect(subject.body).to include meetup[:venue][:address_2]
+      expect(subject.body).to include Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
     end
   end
 end

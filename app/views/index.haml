@@ -3,16 +3,17 @@
   %head
     %title MeetButcher
   %body
-    %h1 Meet-ups in Melbourne this week
+    %h1 Upcoming meet-ups
     - meetups.each do |meetup|
       %h2
         = meetup[:group][:name]
       %h3
         = meetup[:name]
-      %p
-        = Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
-      %p
-        - if meetup.has_key? :venue
+      - if meetup.has_key? :time
+        %p
+          = Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
+      - if meetup.has_key? :venue
+        %p
           = meetup[:venue][:name]
           - if meetup[:venue].has_key? :address_1
             %br
