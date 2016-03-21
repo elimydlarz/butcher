@@ -9,3 +9,6 @@
         = meetup[:group][:name]
       %h3
         = meetup[:name]
+      - if meetup.has_key? :venue
+        %p
+          = meetup[:venue][:name]
