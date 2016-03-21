@@ -12,3 +12,9 @@
       - if meetup.has_key? :venue
         %p
           = meetup[:venue][:name]
+          - if meetup[:venue].has_key? :address_1
+            %br
+            = meetup[:venue][:address_1]
+          - if meetup[:venue].has_key? :address_2
+            %br
+            = meetup[:venue][:address_2]

@@ -49,6 +49,13 @@ describe 'butcher' do
             expect(subject.body).to include meetup[:venue][:name]
           end
         end
+
+        it 'displays the meetup address first line' do
+          if meetup.has_key? :venue
+            expect(subject.body).to include meetup[:venue][:address_1]
+            expect(subject.body).to include meetup[:venue][:address_2] if meetup[:venue].has_key? :address_2
+          end
+        end
       end
     end
   end
