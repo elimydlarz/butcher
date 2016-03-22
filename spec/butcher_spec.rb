@@ -65,7 +65,7 @@ describe 'butcher' do
       expect(subject.body).to include meetup[:venue][:name]
       expect(subject.body).to include meetup[:venue][:address_1]
       expect(subject.body).to include meetup[:venue][:address_2]
-      expect(subject.body).to include Time.at(meetup[:time] / 1000).strftime('%A, %e %B')
+      expect(subject.body).to include Time.at(meetup[:time] / 1000).strftime('%A, %e %B at %k:%M')
     end
 
     it 'omits meetups more than 8 days from now' do
