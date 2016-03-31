@@ -4,6 +4,15 @@
     %link{rel: :stylesheet, type: 'text/css', href: 'index.css'}
     %title MeetButcher
   %body
+    %h1 How do I use this?
+    %p
+      You can manually override the default location by setting <strong>'latitude'</strong>, <strong>'longitude'</strong> and <strong>'radius'</strong>
+      (in miles) using a query string.
+      %br
+      For example,
+      <a href="https://meet-butcher.herokuapp.com/?latitude=-33.865143&longitude=151.209900&radius=20.0">https://meet-butcher.herokuapp.com/?latitude=-33.865143&longitude=151.209900&radius=20.0</a>
+      %br
+      shows meetups within 20.0 miles of Sydney.
     %h1 Upcoming meet-ups
     - meetups.each do |meetup|
       %h2
