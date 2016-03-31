@@ -1,10 +1,6 @@
 class MeetupClient
   class << self
-    def open_events(
-      latitude: ENV.fetch('LOCATION_LATITUDE'),
-      longitude: ENV.fetch('LOCATION_LONGITUDE'),
-      radius: ENV.fetch('LOCATION_RADIUS_MILES')
-    )
+    def open_events(latitude:, longitude:, radius:)
       response = RestClient.get(
         'https://api.meetup.com/2/open_events',
          params: {
