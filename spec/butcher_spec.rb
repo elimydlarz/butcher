@@ -36,10 +36,16 @@ describe 'butcher' do
     let(:today) { Time.at(1458111600) }
     let(:tomorrow) { today + 86400 }
     let(:over_8_days_from_now) { today + 691201 }
-    let(:api_key_stub) { 'TEST_API_KEY' }
+    let(:api_key) { 'test api key' }
+    let(:latitude) { '-33.865143' }
+    let(:longitude) { '151.209900' }
+    let(:radius) { '20.0' }
 
     before do
-      allow(ENV).to receive(:fetch).with('MEETUP_API_KEY') { api_key_stub }
+      allow(ENV).to receive(:fetch).with('MEETUP_API_KEY') { api_key }
+      allow(ENV).to receive(:fetch).with('LOCATION_LATITUDE') { latitude }
+      allow(ENV).to receive(:fetch).with('LOCATION_LONGITUDE') { longitude }
+      allow(ENV).to receive(:fetch).with('LOCATION_RADIUS_MILES') { radius }
       allow(Time).to receive(:now) { today }
 
       stub_request(
@@ -48,11 +54,11 @@ describe 'butcher' do
          query: {
            status: 'upcoming',
            category: '34',
-           lat: '-37.8136',
-           lon: '144.9631',
-           radius: '10.0',
+           lat: latitude,
+           lon: longitude,
+           radius: radius,
            page: '20',
-           key: api_key_stub
+           key: api_key
          }
       ).to_return(
         body: { results: [meetup, incomplete_meetup, meetup_over_8_days_from_now] }.to_json

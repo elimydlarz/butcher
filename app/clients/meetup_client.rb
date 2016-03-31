@@ -4,11 +4,11 @@ class MeetupClient
       response = RestClient.get(
         'https://api.meetup.com/2/open_events',
          params: {
-           lon: '144.9631',
+           lat: ENV.fetch('LOCATION_LATITUDE'),
+           lon: ENV.fetch('LOCATION_LONGITUDE'),
+           radius: ENV.fetch('LOCATION_RADIUS_MILES'),
            page: '20',
-           radius: '10.0',
            category: '34',
-           lat: '-37.8136',
            status: 'upcoming',
            key: ENV.fetch('MEETUP_API_KEY')
          }
