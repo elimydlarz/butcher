@@ -11,7 +11,7 @@
       %h3
         = meetup[:name]
       %p
-        = Time.at(meetup[:time] / 1000).strftime('%A, %e %B at %k:%M')
+        = Time.at((meetup[:time] + meetup[:utc_offset]) / 1000).strftime('%A, %e %B at %k:%M')
       - if meetup.has_key? :venue
         %p
           = meetup[:venue][:name]

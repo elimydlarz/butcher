@@ -13,7 +13,8 @@ describe 'butcher' do
           address_1: 'Level 1, 20 Queens St',
           address_2: 'Melbourne, Victoria'
         },
-        time: tomorrow.to_i * 1000
+        time: tomorrow.to_i * 1000,
+        utc_offset: 39600000
       }
     end
 
@@ -21,7 +22,8 @@ describe 'butcher' do
       {
         name: 'Minimum Meetup',
         group: { name: 'Goodbye Moon-men' },
-        time: tomorrow.to_i * 1000
+        time: tomorrow.to_i * 1000,
+        utc_offset: 39600000
       }
     end
 
@@ -29,7 +31,8 @@ describe 'butcher' do
       {
         name: 'Meetup Over 8 Days From Now',
         group: { name: 'Get Schwifty' },
-        time: over_8_days_from_now.to_i * 1000
+        time: over_8_days_from_now.to_i * 1000,
+        utc_offset: 39600000
       }
     end
 
@@ -66,12 +69,14 @@ describe 'butcher' do
     end
 
     it 'displays meetup details' do
+      meetup_local_time = Time.at((meetup[:time] + meetup[:utc_offset]) / 1000)
+
       expect(subject.body).to include meetup[:name]
       expect(subject.body).to include meetup[:group][:name]
       expect(subject.body).to include meetup[:venue][:name]
       expect(subject.body).to include meetup[:venue][:address_1]
       expect(subject.body).to include meetup[:venue][:address_2]
-      expect(subject.body).to include Time.at(meetup[:time] / 1000).strftime('%A, %e %B at %k:%M')
+      expect(subject.body).to include meetup_local_time.strftime('%A, %e %B at %k:%M')
     end
 
     it 'omits meetups more than 8 days from now' do
