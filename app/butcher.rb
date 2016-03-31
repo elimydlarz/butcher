@@ -3,7 +3,11 @@ require 'rest-client'
 require './app/clients/meetup_client'
 
 get '/' do
-  meetups = MeetupClient.open_events
+  meetups = MeetupClient.open_events(
+    latitude: params[:latitude],
+    longitude: params[:longitude],
+    radius: params[:radius]
+  )
   near_future_meetups = meetups.select { |meetup| time_of(meetup) < days_from_now(8) }
 
   haml :index, locals: { meetups: near_future_meetups }

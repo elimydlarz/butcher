@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe 'butcher' do
   describe 'landing page' do
-    subject { get '/' }
-
     let(:meetup) do
       {
         name: 'Complete Meetup',
@@ -40,47 +38,87 @@ describe 'butcher' do
     let(:tomorrow) { today + 86400 }
     let(:over_8_days_from_now) { today + 691201 }
     let(:api_key) { 'test api key' }
-    let(:latitude) { '-33.865143' }
-    let(:longitude) { '151.209900' }
-    let(:radius) { '20.0' }
 
     before do
       allow(ENV).to receive(:fetch).with('MEETUP_API_KEY') { api_key }
-      allow(ENV).to receive(:fetch).with('LOCATION_LATITUDE') { latitude }
-      allow(ENV).to receive(:fetch).with('LOCATION_LONGITUDE') { longitude }
-      allow(ENV).to receive(:fetch).with('LOCATION_RADIUS_MILES') { radius }
       allow(Time).to receive(:now) { today }
-
-      stub_request(
-        :get, 'https://api.meetup.com/2/open_events'
-      ).with(
-         query: {
-           status: 'upcoming',
-           category: '34',
-           lat: latitude,
-           lon: longitude,
-           radius: radius,
-           page: '20',
-           key: api_key
-         }
-      ).to_return(
-        body: { results: [meetup, incomplete_meetup, meetup_over_8_days_from_now] }.to_json
-      )
     end
 
-    it 'displays meetup details' do
-      meetup_local_time = Time.at((meetup[:time] + meetup[:utc_offset]) / 1000)
+    shared_examples 'meetup list' do
+      it 'displays meetup details' do
+        meetup_local_time = Time.at((meetup[:time] + meetup[:utc_offset]) / 1000)
 
-      expect(subject.body).to include meetup[:name]
-      expect(subject.body).to include meetup[:group][:name]
-      expect(subject.body).to include meetup[:venue][:name]
-      expect(subject.body).to include meetup[:venue][:address_1]
-      expect(subject.body).to include meetup[:venue][:address_2]
-      expect(subject.body).to include meetup_local_time.strftime('%A, %e %B at %k:%M')
+        expect(subject.body).to include meetup[:name]
+        expect(subject.body).to include meetup[:group][:name]
+        expect(subject.body).to include meetup[:venue][:name]
+        expect(subject.body).to include meetup[:venue][:address_1]
+        expect(subject.body).to include meetup[:venue][:address_2]
+        expect(subject.body).to include meetup_local_time.strftime('%A, %e %B at %k:%M')
+      end
+
+      it 'omits meetups more than 8 days from now' do
+        expect(subject.body).not_to include meetup_over_8_days_from_now[:name]
+      end
     end
 
-    it 'omits meetups more than 8 days from now' do
-      expect(subject.body).not_to include meetup_over_8_days_from_now[:name]
+    context 'when default location is used' do
+      subject { get '/' }
+
+      before do
+        latitude = '-33.865143'
+        longitude = '151.209900'
+        radius = '20.0'
+
+        allow(ENV).to receive(:fetch).with('LOCATION_LATITUDE') { latitude }
+        allow(ENV).to receive(:fetch).with('LOCATION_LONGITUDE') { longitude }
+        allow(ENV).to receive(:fetch).with('LOCATION_RADIUS_MILES') { radius }
+
+        stub_request(
+          :get, 'https://api.meetup.com/2/open_events'
+        ).with(
+           query: {
+             status: 'upcoming',
+             category: '34',
+             lat: latitude,
+             lon: longitude,
+             radius: radius,
+             page: '20',
+             key: api_key
+           }
+        ).to_return(
+          body: { results: [meetup, incomplete_meetup, meetup_over_8_days_from_now] }.to_json
+        )
+      end
+
+      it_behaves_like 'meetup list'
+    end
+
+    context 'when location is overridden in URL params' do
+      let(:latitude) { '-37.8136' }
+      let(:longitude) { '144.9631' }
+      let(:radius) { '20.0' }
+
+      subject { get '/', latitude: latitude, longitude: longitude, radius: radius }
+
+      before do
+        stub_request(
+          :get, 'https://api.meetup.com/2/open_events'
+        ).with(
+          query: {
+            status: 'upcoming',
+            category: '34',
+            lat: latitude,
+            lon: longitude,
+            radius: radius,
+            page: '20',
+            key: api_key
+          }
+        ).to_return(
+          body: { results: [meetup, incomplete_meetup, meetup_over_8_days_from_now] }.to_json
+        )
+      end
+
+      it_behaves_like 'meetup list'
     end
   end
 end
