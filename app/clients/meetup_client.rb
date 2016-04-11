@@ -7,7 +7,7 @@ class MeetupClient
            lat: latitude,
            lon: longitude,
            radius: radius,
-           page: '20',
+           page: '100',
            category: '34',
            status: 'upcoming',
            key: ENV.fetch('MEETUP_API_KEY')

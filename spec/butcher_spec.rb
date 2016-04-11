@@ -38,6 +38,7 @@ describe 'butcher' do
     let(:tomorrow) { today + 86400 }
     let(:over_8_days_from_now) { today + 691201 }
     let(:api_key) { 'test api key' }
+    let(:number_of_meetups) { '100' }
 
     before do
       allow(ENV).to receive(:fetch).with('MEETUP_API_KEY') { api_key }
@@ -82,7 +83,7 @@ describe 'butcher' do
              lat: latitude,
              lon: longitude,
              radius: radius,
-             page: '20',
+             page: number_of_meetups,
              key: api_key
            }
         ).to_return(
@@ -110,7 +111,7 @@ describe 'butcher' do
             lat: latitude,
             lon: longitude,
             radius: radius,
-            page: '20',
+            page: number_of_meetups,
             key: api_key
           }
         ).to_return(
