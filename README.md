@@ -1,6 +1,6 @@
 # Butcher
 
-Your friendly, local meet(up) corner shop. Fresh produce delivered to your email.
+Your friendly, local meet(up) corner shop. Fresh produce generated on request. Serving suggestion: Email.
 
 
 ## Testing
