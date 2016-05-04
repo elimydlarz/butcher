@@ -2,7 +2,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.8)
-    byebug (6.0.2)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
@@ -57,7 +56,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  byebug
   haml
   rack-test
   rest-client
@@ -65,5 +63,8 @@ DEPENDENCIES
   sinatra
   webmock
 
+RUBY VERSION
+   ruby 2.2.2p0 (jruby 9.0.1.0)
+
 BUNDLED WITH
-   1.11.2
+   1.12.1
